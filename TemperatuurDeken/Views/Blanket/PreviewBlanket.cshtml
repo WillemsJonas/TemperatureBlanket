@@ -34,30 +34,30 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (BlanketViewModel dag in Model)
+        @foreach (BlanketViewModel day in Model)
         {
-            if (previousDate == dag.Date)
+            if (previousDate == day.Date)
             {
                 <tr class="Rij">
                     <td colspan="2">End of month</td>
-                    <td class="@dag.Color">@dag.Color</td>
+                    <td class="@day.Color">@day.Color</td>
                 </tr>
             }
             else
             {
                 <tr class="Rij">
-                    <td>@dag.Date</td>
-                    @if (dag.Temperature != null)
+                    <td>@day.Date</td>
+                    @if (day.Temperature != null)
                     {
-                        <td style="text-align:right">@dag.Temperature °C</td>
+                        <td style="text-align:right">@day.Temperature °C</td>
                     }
                     else
                     {
                         <td></td>
                     }
-                    @if (dag.Color != Color.White)
+                    @if (day.Color != Color.White)
                     {
-                        <td class="@dag.Color">@dag.Color</td>
+                        <td class="@day.Color">@day.Color</td>
                     }
                     else
                     {
@@ -66,7 +66,7 @@
 
                 </tr>
             }
-            previousDate = dag.Date;
+            previousDate = day.Date;
         }
     </tbody>
 </table>
