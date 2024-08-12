@@ -8,66 +8,66 @@ namespace TemperatuurDeken.Controllers;
 public class HomeController : Controller
 {
     private readonly ILogger<HomeController> _logger;
-    private readonly IDagInterface _dagRepository;
+    private readonly IDayInterface _dayRepository;
 
-    public HomeController(ILogger<HomeController> logger, IDagInterface dagService) => (this._logger, this._dagRepository) = (logger, dagService);
+    public HomeController(ILogger<HomeController> logger, IDayInterface dayService) => (this._logger, this._dayRepository) = (logger, dayService);
 
     [HttpGet]
     public IActionResult Index()
     {
-        var alleDagenuitDatabase = _dagRepository.ToonAlleDagen();
-        List<DagViewModel> alleDagenViewModel = new List<DagViewModel>();
-        alleDagenuitDatabase.ForEach(dag => alleDagenViewModel.Add(new DagViewModel { DagId = dag.DagId, Datum = dag.Datum, Gemaakt = dag.Gemaakt, Kleur = dag.Kleur, OudeTemperatuur = dag.Temperatuur }));
+        var allDays = _dayRepository.ShowAllDays();
+        List<DayViewModel> allDaysViewModel = new List<DayViewModel>();
+        allDays.ForEach(day => allDaysViewModel.Add(new DayViewModel { DayId = day.DayId, Date = day.Date, Done = day.Done, Color = day.Color, OldTemperature = day.Temperature }));
 
-        HttpContext.Response.Cookies.Delete("zoekwaarde");
-        return View(alleDagenViewModel);
+        HttpContext.Response.Cookies.Delete("searchInput");
+        return View(allDaysViewModel);
     }
 
     [HttpPost]
     public IActionResult Update(int id)
     {
-        string? zoekwaarde = Request.Cookies["zoekwaarde"];
-        _dagRepository.Update(id);
+        string? searchInput = Request.Cookies["searchInput"];
+        _dayRepository.Update(id);
 
-        if (zoekwaarde is null)
+        if (searchInput is null)
             return RedirectToAction(nameof(Index));
         
-        return Redirect($"~/Home/ToonPeriode?invoer={zoekwaarde}");
+        return Redirect($"~/Home/ShowPeriod?input={searchInput}");
     }
 
     [HttpPost]
-    public IActionResult VoegTemperatuurToe(DagViewModel dag)
+    public IActionResult AddTemperature(DayViewModel day)
     {
-        string? zoekwaarde = Request.Cookies["zoekwaarde"];
-        _dagRepository.VoegTemperatuurToe(dag);
+        string? searchInput = Request.Cookies["searchInput"];
+        _dayRepository.AddTemperature(day);
 
-        if (zoekwaarde is null)
+        if (searchInput is null)
             return RedirectToAction(nameof(Index));
 
-        return Redirect($"~/Home/ToonPeriode?invoer={zoekwaarde}");
+        return Redirect($"~/Home/ShowPeriod?input={searchInput}");
     }
 
     [HttpGet]
-    public IActionResult VerbergGemaakteDagen()
+    public IActionResult HideDoneDays()
     {
-        List<Dag> nietGemaakteDagen = _dagRepository.VerbergGemaakteDagen();
-        List<DagViewModel> nietGemaakteDagenViewModel = new List<DagViewModel>();
-        _dagRepository.VerbergGemaakteDagen().ForEach(dag => nietGemaakteDagenViewModel.Add(new DagViewModel { DagId = dag.DagId, Datum = dag.Datum, Gemaakt = dag.Gemaakt, Kleur = dag.Kleur, OudeTemperatuur = dag.Temperatuur }));
-        return View("Index", nietGemaakteDagenViewModel);
+        List<Day> toDoDays = _dayRepository.HideDoneDays();
+        List<DayViewModel> toDoDaysViewModel = new List<DayViewModel>();
+        _dayRepository.HideDoneDays().ForEach(dag => toDoDaysViewModel.Add(new DayViewModel { DayId = dag.DayId, Date = dag.Date, Done = dag.Done, Color = dag.Color, OldTemperature = dag.Temperature }));
+        return View("Index", toDoDaysViewModel);
     }
 
     [HttpGet]
-    public IActionResult ToonPeriode(string invoer)
+    public IActionResult ShowPeriod(string input)
     {
         CookieOptions options = new CookieOptions();
         options.MaxAge = TimeSpan.FromDays(1);
-        Response.Cookies.Append("zoekwaarde", invoer, options);
+        Response.Cookies.Append("searchInput", input, options);
 
-        List<Dag> gekozenPeriode = _dagRepository.ToonGekozePeriode(invoer);
-        List<DagViewModel> gekozenPeriodeViewModel = new List<DagViewModel>();
-        gekozenPeriode.ForEach(dag => gekozenPeriodeViewModel.Add(new DagViewModel { DagId = dag.DagId, Datum = dag.Datum, Gemaakt = dag.Gemaakt,Kleur = dag.Kleur, OudeTemperatuur = dag.Temperatuur }));
+        List<Day> chosenPeriod = _dayRepository.ShowChosenPeriod(input);
+        List<DayViewModel> chosenPeriodViewModel = new List<DayViewModel>();
+        chosenPeriod.ForEach(dag => chosenPeriodViewModel.Add(new DayViewModel { DayId = dag.DayId, Date = dag.Date, Done = dag.Done,Color = dag.Color, OldTemperature = dag.Temperature }));
 
-        return View("Index", gekozenPeriodeViewModel);
+        return View("Index", chosenPeriodViewModel);
     }
 
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

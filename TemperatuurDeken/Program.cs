@@ -7,8 +7,8 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
-builder.Services.AddDbContext<TemperatuurDekenContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("TemperatuurDeken")));
-builder.Services.AddTransient<IDagInterface,DagService>();
+builder.Services.AddDbContext<TemperatureBlanketContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("TemperatuurDeken")));
+builder.Services.AddTransient<IDayInterface,DayService>();
 
 var app = builder.Build();
 
@@ -29,6 +29,6 @@ app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+    pattern: "{controller=Home}/{action=Index}");
 
 app.Run();

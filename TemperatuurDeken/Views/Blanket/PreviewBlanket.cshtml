@@ -1,0 +1,72 @@
+﻿@using TemperatuurDeken.Models.Viewmodels
+<link rel="stylesheet" href="~/css/deken.css" asp-append-version="true" />
+@model List<BlanketViewModel>
+@{
+    DateOnly? previousDate = null;
+}
+<div style="text-align:center">
+<h2>Preview</h2>
+<div class="OverzichtActieKnoppen">
+    <form method="get" asp-controller="Home" asp-action="Index">
+        <input class="OverzichtActieKnop" type="submit" value="Main page" />
+    </form>
+    <form method="get" asp-action="ShowDone">
+        <input class="OverzichtActieKnop" type="submit" value="Done" />
+    </form>
+    <form method="get" asp-action="ShowToDo">
+        <input class="OverzichtActieKnop" type="submit" value="To do" />
+    </form>
+    <form method="get" asp-action="PreviewBlanket">
+        <input class="OverzichtActieKnop" type="submit" value="Show all" />
+    </form>
+        <form method="get" asp-controller="Blanket" asp-action="ShowPeriod">
+        <input class="Zoekveld" type="search" placeholder="Show period (ex: 12-2|16-4)" name="input" />
+    </form>
+</div>
+</div>
+
+<table class="table-borderless">
+    <thead>
+        <tr>
+            <td><h5>Date</h5></td>
+            <td><h5>Temperature</h5></td>
+            <td><h5 style="text-align:right">Color</h5></td>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (BlanketViewModel dag in Model)
+        {
+            if (previousDate == dag.Date)
+            {
+                <tr class="Rij">
+                    <td colspan="2">End of month</td>
+                    <td class="@dag.Color">@dag.Color</td>
+                </tr>
+            }
+            else
+            {
+                <tr class="Rij">
+                    <td>@dag.Date</td>
+                    @if (dag.Temperature != null)
+                    {
+                        <td style="text-align:right">@dag.Temperature °C</td>
+                    }
+                    else
+                    {
+                        <td></td>
+                    }
+                    @if (dag.Color != Color.White)
+                    {
+                        <td class="@dag.Color">@dag.Color</td>
+                    }
+                    else
+                    {
+                        <td></td>
+                    }
+
+                </tr>
+            }
+            previousDate = dag.Date;
+        }
+    </tbody>
+</table>

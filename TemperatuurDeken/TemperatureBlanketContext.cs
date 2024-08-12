@@ -5,15 +5,15 @@ using TemperatuurDekenLibrary.Repositories.Seedings;
 
 namespace TemperatuurDekenLibrary;
 
-public class TemperatuurDekenContext : DbContext
+public class TemperatureBlanketContext : DbContext
 {
-    public TemperatuurDekenContext(DbContextOptions<TemperatuurDekenContext> options) : base(options) { }
-    public DbSet<Dag> Dagen => Set<Dag>();
+    public TemperatureBlanketContext(DbContextOptions<TemperatureBlanketContext> options) : base(options) { }
+    public DbSet<Day> Days => Set<Day>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.ApplyConfiguration(new DagConfiguration());
-        modelBuilder.ApplyConfiguration(new DagSeeding());
+        modelBuilder.ApplyConfiguration(new DayConfiguration());
+        modelBuilder.ApplyConfiguration(new DaySeeding());
 
         base.OnModelCreating(modelBuilder);
     }

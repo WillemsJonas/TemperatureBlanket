@@ -3,13 +3,13 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using TemperatuurDeken;
 
 namespace TemperatuurDekenLibrary.Repositories.Configurations;
-public class DagConfiguration : IEntityTypeConfiguration<Dag>
+public class DayConfiguration : IEntityTypeConfiguration<Day>
 {
-    public void Configure(EntityTypeBuilder<Dag> builder)
+    public void Configure(EntityTypeBuilder<Day> builder)
     {
         builder.ToTable("Dagen");
-        builder.HasIndex(b => b.Datum);
+        builder.HasIndex(b => b.Date);
 
-        builder.HasKey(b => b.DagId);
+        builder.HasKey(b => b.DayId);
     }
 }

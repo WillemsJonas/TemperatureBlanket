@@ -11,7 +11,7 @@ using TemperatuurDekenLibrary;
 
 namespace TemperatuurDeken.Migrations
 {
-    [DbContext(typeof(TemperatuurDekenContext))]
+    [DbContext(typeof(TemperatureBlanketContext))]
     [Migration("20240712071723_ToevoegingWitteLijnNaElkeMaand")]
     partial class ToevoegingWitteLijnNaElkeMaand
     {

@@ -1,23 +1,23 @@
 ﻿@using TemperatuurDeken.Models.Viewmodels
-@model List<DagViewModel>
+@model List<DayViewModel>
 @{
-    DateOnly? vorigeDatum = null;
+    DateOnly? previousDate = null;
 }
 
 <div style="text-align:center">
-    <h2 class="TitelTemperatuurdeken">Temperatuurdeken 2024</h2>
+    <h2 class="TitelTemperatuurdeken">Temperature blanket 2024</h2>
     <div class="OverzichtActieKnoppen">
         <form method="get" asp-action="Index">
-            <input class="OverzichtActieKnop" type="submit" value="Toon alle dagen"/>
+            <input class="OverzichtActieKnop" type="submit" value="Show all"/>
         </form>
-        <form method="get" asp-action="VerbergGemaakteDagen">
-            <input class="OverzichtActieKnop" type="submit" value="Verberg gemaakte dagen" />
+        <form method="get" asp-action="HideDoneDays">
+            <input class="OverzichtActieKnop" type="submit" value="Hide done days" />
         </form>
-        <form method="get" asp-controller="Deken" asp-action="PreviewDeken">
-            <input class="OverzichtActieKnop" type="submit" value="Preview deken" />
+        <form method="get" asp-controller="Blanket" asp-action="PreviewBlanket">
+            <input class="OverzichtActieKnop" type="submit" value="Preview blanket" />
         </form>
-        <form method="get" asp-controller="Home" asp-action="ToonPeriode">
-            <input class="Zoekveld" type="search" placeholder="Zoek periode (bv. 12-2|16-4)" name="invoer" />
+        <form method="get" asp-controller="Home" asp-action="ShowPeriod">
+            <input class="Zoekveld" type="search" placeholder="Find period (ex: 12-2|16-4)" name="input" />
         </form>
     </div>
 
@@ -26,24 +26,24 @@
     <table align="center" >
         <thead>
             <tr>
-                <td><h5>Datum</h5></td>
-                <td colspan="2" style="margin-left:40px;"><h5>Temperatuur</h5></td>
+                <td><h5>Date</h5></td>
+                <td colspan="2" style="margin-left:40px;"><h5>Temperature</h5></td>
                 <td></td>
-                <td><h5>Kleur</h5></td>
-                <td id="GemaaktTitel"><h5>Gemaakt</h5></td>
+                <td><h5>Color</h5></td>
+                <td id="GemaaktTitel"><h5>Done</h5></td>
             </tr>
         </thead>
         <tbody>
-            @foreach (var dag in Model)
+            @foreach (var day in Model)
             {
-                if (vorigeDatum == dag.Datum)
+                if (previousDate == day.Date)
                 {
                     <tr>
-                        <td>Einde maand</td>
-                        <td colspan="3"><input type="hidden" asp-for="@dag.DagId" /></td>
-                        <td class="@dag.Kleur">@dag.Kleur</td>
-                        <form method="post" asp-action="Update" asp-route-id="@dag.DagId" onsubmit="return">
-                            @if (dag.Gemaakt)
+                        <td>End of month</td>
+                        <td colspan="3"><input type="hidden" asp-for="@day.DayId" /></td>
+                        <td class="@day.Color">@day.Color</td>
+                        <form method="post" asp-action="Update" asp-route-id="@day.DayId" onsubmit="return">
+                            @if (day.Done)
                             {
                             <td class="GemaaktCheckbox"><input type="checkbox" checked /></td>
                             }
@@ -58,15 +58,15 @@
                 else
                 {
                     <tr>
-                        <td style="width: 120px">@dag.Datum</td>
-                        <form method="post" asp-action="VoegTemperatuurToe" asp-route-dag="@dag">
-                        <td><input type="hidden" asp-for="@dag.DagId" /></td>
-                        <td style="width: 160px"><input style="width:110px;" asp-for="@dag.NieuweTemperatuur" value="@dag.OudeTemperatuur" /></td>
-                        <td style="width: 220px"><input class="TemperatuurupdateKnop" type="submit" value="Voeg temperatuur toe" /></td>
+                        <td style="width: 120px">@day.Date</td>
+                        <form method="post" asp-action="AddTemperature" asp-route-day="@day">
+                        <td><input type="hidden" asp-for="@day.DayId" /></td>
+                        <td style="width: 160px"><input style="width:110px;" asp-for="@day.NewTemperature" value="@day.OldTemperature" /></td>
+                        <td style="width: 220px"><input class="TemperatuurupdateKnop" type="submit" value="Add temperature" /></td>
                         </form>
-                        <td class="@dag.Kleur">@dag.Kleur</td>
-                        <form method="post" asp-action="Update" asp-route-id="@dag.DagId" onsubmit="return">
-                            @if (dag.Gemaakt)
+                        <td class="@day.Color">@day.Color</td>
+                        <form method="post" asp-action="Update" asp-route-id="@day.DayId" onsubmit="return">
+                            @if (day.Done)
                             {
                             <td class="GemaaktCheckbox"><input type="checkbox" checked /></td>
                             }
@@ -78,7 +78,7 @@
                         </form>
                     </tr>
                 }
-                vorigeDatum = dag.Datum;
+                previousDate = day.Date;
             }
         </tbody>
     </table>

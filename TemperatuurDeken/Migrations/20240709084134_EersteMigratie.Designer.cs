@@ -11,7 +11,7 @@ using TemperatuurDekenLibrary;
 
 namespace TemperatuurDeken.Migrations
 {
-    [DbContext(typeof(TemperatuurDekenContext))]
+    [DbContext(typeof(TemperatureBlanketContext))]
     [Migration("20240709084134_EersteMigratie")]
     partial class EersteMigratie
     {

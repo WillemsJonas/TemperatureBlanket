@@ -10,7 +10,7 @@ using TemperatuurDekenLibrary;
 
 namespace TemperatuurDeken.Migrations
 {
-    [DbContext(typeof(TemperatuurDekenContext))]
+    [DbContext(typeof(TemperatureBlanketContext))]
     partial class TemperatuurDekenContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)
