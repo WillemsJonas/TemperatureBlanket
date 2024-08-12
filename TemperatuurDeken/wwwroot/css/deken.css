@@ -1,0 +1,79 @@
+﻿h5 {
+    text-align:left;
+}
+
+.Parchment {
+    background-color: rgb(252, 245, 229);
+    width: 100%;
+    text-align: right;
+}
+
+.Lincoln {
+    background-color: rgb(183, 221, 198);
+    width: 100%;
+    text-align: right;
+}
+
+.Buttermilk {
+    background-color: rgb(255, 243, 184);
+    width: 100%;
+    text-align: right;
+}
+
+.PaleRose {
+    background-color: #FDC1C5;
+    width: 100%;
+    text-align: right;
+}
+
+.Grape {
+    background-color: rgb(145, 78, 152);
+    width: 100%;
+    text-align: right;
+}
+
+.Mocha {
+    background-color: rgb(150, 121, 105);
+    width: 100%;
+    text-align: right;
+}
+
+.Wit {
+    background-color: white;
+    text-align: right;
+}
+
+.OverzichtActieKnop {
+    margin-right: 40px;
+    align-items: center;
+    background-color: #FFFFFF;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    border-radius: .25rem;
+    box-shadow: rgba(0, 0, 0, 0.02) 0 2px 3px 0;
+    box-sizing: border-box;
+    color: rgba(0, 0, 0, 0.85);
+    cursor: pointer;
+    display: inline-flex;
+    font-family: system-ui,-apple-system,system-ui,"Helvetica Neue",Helvetica,Arial,sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    justify-content: center;
+    line-height: 1.25;
+    min-height: 2rem;
+    padding: calc(.875rem - 1px) calc(1.5rem - 1px);
+    position: relative;
+    text-decoration: none;
+    transition: all 250ms;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+    vertical-align: baseline;
+    width: auto;
+}
+
+.OverzichtActieKnoppen {
+    display: inline-flex;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+

@@ -1,0 +1,72 @@
+﻿@using TemperatuurDeken.Models.Viewmodels
+<link rel="stylesheet" href="~/css/deken.css" asp-append-version="true" />
+@model List<DekenViewModel>
+@{
+    DateOnly? vorigeDatum = null;
+}
+<div style="text-align:center">
+<h2>Preview</h2>
+<div class="OverzichtActieKnoppen">
+    <form method="get" asp-controller="Home" asp-action="Index">
+        <input class="OverzichtActieKnop" type="submit" value="Overzicht" />
+    </form>
+    <form method="post" asp-action="ToonGemaakt">
+        <input class="OverzichtActieKnop" type="submit" value="Gemaakt" />
+    </form>
+    <form method="post" asp-action="ToonNogTeMaken">
+        <input class="OverzichtActieKnop" type="submit" value="Nog te maken" />
+    </form>
+    <form method="post" asp-action="PreviewDeken">
+        <input class="OverzichtActieKnop" type="submit" value="Toon alles" />
+    </form>
+    <form method="get" asp-controller="Deken" asp-action="ToonPeriode">
+        <input class="Zoekveld" type="search" placeholder="Zoek periode (bv. 12-2|16-4)" name="invoer" />
+    </form>
+</div>
+</div>
+
+<table class="table-borderless">
+    <thead>
+        <tr>
+            <td><h5>Datum</h5></td>
+            <td><h5>Temperatuur</h5></td>
+            <td><h5 style="text-align:right">Kleur</h5></td>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (DekenViewModel dag in Model)
+        {
+            if (vorigeDatum == dag.Datum)
+            {
+                <tr class="Rij">
+                    <td colspan="2">Einde maand</td>
+                    <td class="@dag.Kleur">@dag.Kleur</td>
+                </tr>
+            }
+            else
+            {
+                <tr class="Rij">
+                    <td>@dag.Datum</td>
+                    @if (dag.Temperatuur != null)
+                    {
+                        <td style="text-align:right">@dag.Temperatuur °C</td>
+                    }
+                    else
+                    {
+                        <td></td>
+                    }
+                    @if (dag.Kleur != Kleur.Wit)
+                    {
+                        <td class="@dag.Kleur">@dag.Kleur</td>
+                    }
+                    else
+                    {
+                        <td></td>
+                    }
+
+                </tr>
+            }
+            vorigeDatum = dag.Datum;
+        }
+    </tbody>
+</table>

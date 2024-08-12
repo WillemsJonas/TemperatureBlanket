@@ -1,0 +1,85 @@
+﻿@using TemperatuurDeken.Models.Viewmodels
+@model List<DagViewModel>
+@{
+    DateOnly? vorigeDatum = null;
+}
+
+<div style="text-align:center">
+    <h2 class="TitelTemperatuurdeken">Temperatuurdeken 2024</h2>
+    <div class="OverzichtActieKnoppen">
+        <form method="get" asp-action="Index">
+            <input class="OverzichtActieKnop" type="submit" value="Toon alle dagen"/>
+        </form>
+        <form method="get" asp-action="VerbergGemaakteDagen">
+            <input class="OverzichtActieKnop" type="submit" value="Verberg gemaakte dagen" />
+        </form>
+        <form method="get" asp-controller="Deken" asp-action="PreviewDeken">
+            <input class="OverzichtActieKnop" type="submit" value="Preview deken" />
+        </form>
+        <form method="get" asp-controller="Home" asp-action="ToonPeriode">
+            <input class="Zoekveld" type="search" placeholder="Zoek periode (bv. 12-2|16-4)" name="invoer" />
+        </form>
+    </div>
+
+</div>
+<div class ="OverzichtTabel">
+    <table align="center" >
+        <thead>
+            <tr>
+                <td><h5>Datum</h5></td>
+                <td colspan="2" style="margin-left:40px;"><h5>Temperatuur</h5></td>
+                <td></td>
+                <td><h5>Kleur</h5></td>
+                <td id="GemaaktTitel"><h5>Gemaakt</h5></td>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var dag in Model)
+            {
+                if (vorigeDatum == dag.Datum)
+                {
+                    <tr>
+                        <td>Einde maand</td>
+                        <td colspan="3"><input type="hidden" asp-for="@dag.DagId" /></td>
+                        <td class="@dag.Kleur">@dag.Kleur</td>
+                        <form method="post" asp-action="Update" asp-route-id="@dag.DagId" onsubmit="return">
+                            @if (dag.Gemaakt)
+                            {
+                            <td class="GemaaktCheckbox"><input type="checkbox" checked /></td>
+                            }
+                            else
+                            {
+                            <td class="GemaaktCheckbox"><input type="checkbox" /></td>
+                            }
+                        <td><input class="UpdateKnop" type="submit" value="Update" /></td>
+                        </form>
+                    </tr>
+                }
+                else
+                {
+                    <tr>
+                        <td style="width: 120px">@dag.Datum</td>
+                        <form method="post" asp-action="VoegTemperatuurToe" asp-route-dag="@dag">
+                        <td><input type="hidden" asp-for="@dag.DagId" /></td>
+                        <td style="width: 160px"><input style="width:110px;" asp-for="@dag.NieuweTemperatuur" value="@dag.OudeTemperatuur" /></td>
+                        <td style="width: 220px"><input class="TemperatuurupdateKnop" type="submit" value="Voeg temperatuur toe" /></td>
+                        </form>
+                        <td class="@dag.Kleur">@dag.Kleur</td>
+                        <form method="post" asp-action="Update" asp-route-id="@dag.DagId" onsubmit="return">
+                            @if (dag.Gemaakt)
+                            {
+                            <td class="GemaaktCheckbox"><input type="checkbox" checked /></td>
+                            }
+                            else
+                            {
+                            <td class="GemaaktCheckbox"><input type="checkbox" /></td>
+                            }
+                        <td><input class="UpdateKnop" type="submit" value="Update" class="" /></td>
+                        </form>
+                    </tr>
+                }
+                vorigeDatum = dag.Datum;
+            }
+        </tbody>
+    </table>
+</div>
